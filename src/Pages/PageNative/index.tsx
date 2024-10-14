@@ -18,6 +18,9 @@ import {
   VideoSection,
 } from "./styles.module";
 import axios from "axios";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+
 
 const PageNative: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -26,6 +29,13 @@ const PageNative: React.FC = () => {
   const [message, setMessage] = useState<string[]>([]);
   const [inputText, setInputText] = useState<string>("");
   const [imageList, setImageList] = useState<string[]>([]);
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
 
   useEffect(() => {
     startVideoStream();
@@ -190,6 +200,14 @@ const PageNative: React.FC = () => {
         </ImageSelectionSection>
       </BodyContainer>
       <ResponseContainer>AI Response:{message}</ResponseContainer>
+      
+    <div>
+      <p>Microphone: {listening ? 'on' : 'off'}</p>
+     {/*  <button onClick={SpeechRecognition.startListening}>Start</button> */}
+      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={resetTranscript}>Reset</button>
+      <p>{transcript}</p>
+    </div>
     </Container>
   );
 };
